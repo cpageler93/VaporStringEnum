@@ -9,9 +9,9 @@ import HTTP
 import Vapor
 import Foundation
 
-final class VaporStringEnumMiddleware: Middleware {
+public final class VaporStringEnumMiddleware: Middleware {
     
-    func respond(to request: Request, chainingTo next: Responder) throws -> Response {
+    public func respond(to request: Request, chainingTo next: Responder) throws -> Response {
         do {
             return try next.respond(to: request)
         } catch VaporStringEnumError.nilValue(let type) {

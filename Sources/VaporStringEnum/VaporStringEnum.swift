@@ -9,13 +9,13 @@ import Vapor
 import FluentProvider
 
 
-enum VaporStringEnumError: Error {
+public enum VaporStringEnumError: Error {
     case nilValue(type: String)
     case invalidValue(value: String, type: String)
 }
 
 
-protocol VaporStringEnum: NodeInitializable, JSONConvertible, RowConvertible, RawRepresentable where RawValue == String {
+public protocol VaporStringEnum: NodeInitializable, JSONConvertible, RowConvertible, RawRepresentable where RawValue == String {
     
     init(optionalRawValue rawValue: String?) throws
     
@@ -29,32 +29,32 @@ protocol VaporStringEnum: NodeInitializable, JSONConvertible, RowConvertible, Ra
 }
 
 
-extension VaporStringEnum {
+public extension VaporStringEnum {
     
-    init(optionalRawValue rawValue: String?) throws {
+    public init(optionalRawValue rawValue: String?) throws {
         let stringDescribingSelf = String(describing: Self.self)
         guard let rawValue = rawValue else { throw VaporStringEnumError.nilValue(type: stringDescribingSelf) }
         guard let type = Self(rawValue: rawValue) else { throw VaporStringEnumError.invalidValue(value: rawValue, type: stringDescribingSelf) }
         self.init(rawValue: type.rawValue)!
     }
     
-    init(node: Node) throws {
+    public init(node: Node) throws {
         try self.init(optionalRawValue: node.string)
     }
     
-    init(json: JSON) throws {
+    public init(json: JSON) throws {
         try self.init(optionalRawValue: json.string)
     }
     
-    init(row: Row) throws {
+    public init(row: Row) throws {
         try self.init(optionalRawValue: row.string)
     }
     
-    func makeJSON() throws -> JSON {
+    public func makeJSON() throws -> JSON {
         return JSON(rawValue)
     }
     
-    func makeRow() throws -> Row {
+    public func makeRow() throws -> Row {
         return Row(rawValue)
     }
     
